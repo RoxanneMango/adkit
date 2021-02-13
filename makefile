@@ -16,12 +16,12 @@ gcc-unzip: gcc-get
 	$(UNZIP) xvf $(ARM_GCC_ZIP) -C $(ARM_GCC_VERSION)/. && \
 	$(RM) $(ARM_GCC_ZIP)
 	
-gcc-get:
+gcc-get: gcc-dir
 	cd $(TOOLS) && cd $(ARM_GCC) && \
 	if test ! -d $(ARM_GCC_VERSION); then $(WGET) -N -O $(ARM_GCC_ZIP) $(ARM_GCC_URL) && $(MKDIR) -p $(ARM_GCC_VERSION); fi
 
 #tools-dir:
 #	$(MKDIR) -p $(TOOLS)
 
-#gcc-dir: tools-dir
-#	cd $(TOOLS) && $(MKDIR) -p $(ARM_GCC)
+gcc-dir:
+	cd $(TOOLS) && $(MKDIR) -p $(ARM_GCC)
