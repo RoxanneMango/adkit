@@ -1,1 +1,7 @@
-lib/*
+lib/Adafruit_BusIO
+lib/Adafruit_NeoPixel
+lib/Adafruit_SSD1306
+lib/Adafruit-GFX-Library
+lib/ArduinoCore-sam
+lib/Catch2
+lib/RTCDue
