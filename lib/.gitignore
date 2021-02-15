@@ -1,0 +1,17 @@
+Adafruit_BusIO/build
+Adafruit_BusIO/out
+
+Adafruit_NeoPixel/build
+Adafruit_NeoPixel/out
+
+Adafruit_SSD1306/build
+Adafruit_SSD1306/out
+
+Adafruit-GFX-Library/build
+Adafruit-GFX-Library/out
+
+ArduinoCore-sam/build
+ArduinoCore-sam/out
+
+RTCDue/build
+RTCDue/out

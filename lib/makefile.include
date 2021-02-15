@@ -5,8 +5,15 @@ AR = $(GCC_BIN)/arm-none-eabi-ar
 OBJC = $(GCC_BIN)/arm-none-eabi-objcopy
 SIZE = $(GCC_BIN)/arm-none-eabi-size
 
+SAM_DIR = ArduinoCore-sam
+SAM_CORE = $(SAM_DIR)/cores/arduino
+SAM_CORE_USB = $(SAM_CORE)/usb
+SAM_CORE_AVR = $(SAM_CORE)/avr
+SAM_LIBS = $(SAM_DIR)/libraries
+SAM_VARS = $(SAM_DIR)/variants/arduino_due_x
+
 SAM_MACROS = -DF_CPU=84000000L -DARDUINO=10813 -DARDUINO_SAM_DUE -DARDUINO_ARCH_SAM -D__SAM3X8E__ -mthumb -DUSB_VID=0x2341 -DUSB_PID=0x003e -DUSBCON
-SAM_INCLUDE = -I$(SAM_DIR)/system/libsam -I$(SAM_DIR)/system/CMSIS/CMSIS/Include -I$(SAM_DIR)/system/CMSIS/Device/ATMEL -I$(SAM_CORE) -I$(SAM_VARS)
+SAM_INCLUDE = -I$(SAM_DIR)/system/libsam -I$(SAM_DIR)/system/CMSIS/CMSIS/Include -I$(SAM_DIR)/system/CMSIS/Device/ATMEL -I$(SAM_CORE) -I$(SAM_CORE_USB) -I$(SAM_CORE_AVR) -I$(SAM_LIBS)/HID/src -I$(SAM_LIBS)/SPI/src -I$(SAM_LIBS)/Wire/src -I$(SAM_VARS)
 CXXFLAGS = -c -g -Os -Wall -std=gnu++11 -nostdlib \
 	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions \
 	-MMD -mcpu=cortex-m3 -mthumb \
