@@ -4,45 +4,11 @@ This version of BOSSA only includes the command line utility of the original pro
 like the use of std::auto_ptr, which has been changed to std::unique_ptr. In Samba.cpp the _port = port was changed to _port = std::move(port)
 usleep was replaced with a SLEEP macro function in sleep.h which accepts an argument of how long to sleep in micro seconds; it has a windows and linux implementation.
 
-
-BOSSA 1.4 for Arduino
----------------------
-This version of BOSSA is a fork of the original project and contains some
-patches specific for the Arduino products that are unlike to be accepted
-upstream.
+--------------------
 
 The original software is developed by Scott Shumate and can be found here:
 
 http://www.shumatech.com/web/products/bossa
-
-BOSSA 1.5-arduino
------------------
-
-* Added Codelite project for easier development and debug.
-* Improved support for SAMD21 chip by using existing applet already in use for other devices.
-  * Added time count for operations erase, write, read and verify.
-  * Added Devices.h for global definitions for each devices.
-  * NVMFlash::write() rewritten.
-  * Removed some useless functions from 1.4 release.
-  * Added a mask for SAMD chipid: DIE and REV bitfields are not taken into account as they may vary in the time without impacting the features.
-  * Improved write time performance by a factor of 2x
-
-
-BOSSA 1.4-arduino
------------------
-
-* Added support for SAMD21 chip
-
-
-BOSSA 1.2
----------
-
-FILES
-bossa-1.2.msi -- Windows 2000+
-bossa64-1.2.msi -- Windows 2000+ 64-bit
-bossa-i686-1.2.tgz -- Linux GTK
-bossa-x86_64-1.2.tgz -- Linux GTK 64-bit
-bossa-1.2.dmg -- MAC OS X 10.6+
 
 NEW IN THIS RELEASE
 * New BOSSA shell command line application to do basic memory, flash, and PIO diagnostics

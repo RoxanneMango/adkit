@@ -1,2 +1,2 @@
 # adkit
-Developer toolchain for the arduino toolchain
+Developer toolchain for the arduino due
