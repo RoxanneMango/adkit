@@ -1,4 +1,9 @@
-GCC_BIN = ../tools/arm-none-eabi-gcc/9.3.1-2020q2/gcc-arm-none-eabi-9-2020-q2-update/bin
+ifeq ($(OS),Windows_NT)
+GCC_BIN = ../tools/arm-none-eabi-gcc/9.3.1-2020q2-windows/bin
+else
+GCC_BIN = ../tools/arm-none-eabi-gcc/9.3.1-2020q2-linux/gcc-arm-none-eabi-9-2020-q2-update/bin
+endif
+
 CC = $(GCC_BIN)/arm-none-eabi-gcc
 CXX = $(GCC_BIN)/arm-none-eabi-g++
 AR = $(GCC_BIN)/arm-none-eabi-ar
@@ -12,8 +17,26 @@ SAM_CORE_AVR = $(SAM_CORE)/avr
 SAM_LIBS = $(SAM_DIR)/libraries
 SAM_VARS = $(SAM_DIR)/variants/arduino_due_x
 
-SAM_MACROS = -DF_CPU=84000000L -DARDUINO=10813 -DARDUINO_SAM_DUE -DARDUINO_ARCH_SAM -D__SAM3X8E__ -mthumb -DUSB_VID=0x2341 -DUSB_PID=0x003e -DUSBCON
-SAM_INCLUDE = -I$(SAM_DIR)/system/libsam -I$(SAM_DIR)/system/CMSIS/CMSIS/Include -I$(SAM_DIR)/system/CMSIS/Device/ATMEL -I$(SAM_CORE) -I$(SAM_CORE_USB) -I$(SAM_CORE_AVR) -I$(SAM_LIBS)/HID/src -I$(SAM_LIBS)/SPI/src -I$(SAM_LIBS)/Wire/src -I$(SAM_VARS)
+SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
+	-I$(SAM_DIR)/system/CMSIS/CMSIS/Include \
+	-I$(SAM_DIR)/system/CMSIS/Device/ATMEL \
+	-I$(SAM_CORE) \
+	-I$(SAM_CORE_USB) \
+	-I$(SAM_CORE_AVR) \
+	-I$(SAM_LIBS)/HID/src \
+	-I$(SAM_LIBS)/SPI/src \
+	-I$(SAM_LIBS)/Wire/src \
+	-I$(SAM_VARS)
+
+SAM_MACROS = -DF_CPU=84000000L \
+	-DARDUINO=10813 \
+	-DARDUINO_SAM_DUE \
+	-DARDUINO_ARCH_SAM \
+	-D__SAM3X8E__ \
+	-DUSB_VID=0x2341 \
+	-DUSB_PID=0x003e \
+	-DUSBCON
+
 CXXFLAGS = -c -g -Os -Wall -std=gnu++11 -nostdlib \
 	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions \
 	-MMD -mcpu=cortex-m3 -mthumb \
@@ -26,4 +49,7 @@ CFLAGS = -c -g -Os -Wall -std=gnu11 -nostdlib \
 	-MMD -mcpu=cortex-m3 -mthumb \
 	$(SAM_MACROS) \
 	$(SAM_INCLUDE)
-C_ASM_FLAGS = -c -g -x assembler-with-cpp -MMD -mcpu=cortex-m3 -mthumb $(SAM_MACROS) $(SAM_INCLUDE)
+C_ASM_FLAGS = -c -g -x assembler-with-cpp \
+	-MMD -mcpu=cortex-m3 -mthumb \
+	$(SAM_MACROS) \
+	$(SAM_INCLUDE)
