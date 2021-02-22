@@ -18,3 +18,4 @@ Developer toolchain for the arduino due
 - Arduino Core for SAM3X CPU
 - Arduino library for controlling single-wire-based LED pixels
 - RTC Library for the Arduino Due (real time clock)
+- Catch2 unit testing framework for C++, single include version
