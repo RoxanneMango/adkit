@@ -12,7 +12,7 @@ SIZE = $(GCC_BIN)/arm-none-eabi-size
 
 SAM_DIR = ArduinoCore-sam
 SAM_CORE = $(SAM_DIR)/cores/arduino
-SAM_CORE_USB = $(SAM_CORE)/usb
+SAM_CORE_USB = $(SAM_CORE)/USB
 SAM_CORE_AVR = $(SAM_CORE)/avr
 SAM_LIBS = $(SAM_DIR)/libraries
 SAM_VARS = $(SAM_DIR)/variants/arduino_due_x
