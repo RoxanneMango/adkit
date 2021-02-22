@@ -20,7 +20,7 @@ ARM_GCC_DIR = $(ARM_GCC_VERSION)-windows
 
 endif
 
-.PHONY: all gcc-unzip lib bossac
+.PHONY: all gcc lib bossac
 
 all: gcc lib bossac
 
