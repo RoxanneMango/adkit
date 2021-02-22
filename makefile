@@ -1,10 +1,6 @@
-# linux:
-
 MAKE = make
-MKDIR = mkdir
 CURL = curl
 UNZIP = tar
-RM = rm
 PYTHON = py
 
 ARM_GCC_VERSION = 9.3.1-2020q2
@@ -23,7 +19,6 @@ PORT = ttyS3
 ifeq ($(OS),Windows_NT)
 
 PYTHON = py
-RM = del
 
 ARM_GCC_URL = "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-win32.zip?revision=95631fd0-0c29-41f4-8d0c-3702650bdd74&la=en&hash=D2C7F7C52183A8818AE6179AB87AA7CF6B1AE275"
 ARM_GCC_ZIP = $(ARM_GCC_VERSION).zip
@@ -50,11 +45,11 @@ gcc-get: gcc-dir
 	cd $(TOOLS_DIR) && cd $(ARM_GCC) && \
 	if not exist $(ARM_GCC_ZIP) $(CURL) -L $(ARM_GCC_URL) --output $(ARM_GCC_ZIP)
 gcc-dir:
-	cd $(TOOLS_DIR) && if not exist $(ARM_GCC) $(MKDIR) $(ARM_GCC)
-	cd $(TOOLS_DIR) && cd $(ARM_GCC) && if not exist $(ARM_GCC_DIR) $(MKDIR) $(ARM_GCC_DIR)
+	cd $(TOOLS_DIR) && if not exist $(ARM_GCC) mkdir $(ARM_GCC)
+	cd $(TOOLS_DIR) && cd $(ARM_GCC) && if not exist $(ARM_GCC_DIR) mkdir $(ARM_GCC_DIR)
 flash:
 	@echo "Forcing reset with port-bump of 1200 bps . . ."
-	$(PYTHON) $(PORT_BUMP)
+	$(PYTHON) $(PORT_BUMP) $(PORT)
 	@echo "Writing binary to the arduino due . . ."
 	$(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BIN_FILE) -R
 clean:
@@ -65,10 +60,10 @@ else
 
 gcc-get: gcc-dir
 	cd $(TOOLS_DIR) && cd $(ARM_GCC) && \
-	if test ! -f $(ARM_GCC_ZIP); then $(CURL) -L $(ARM_GCC_URL) --output $(ARM_GCC_ZIP) && $(MKDIR) -p $(ARM_GCC_DIR); fi
+	if test ! -f $(ARM_GCC_ZIP); then $(CURL) -L $(ARM_GCC_URL) --output $(ARM_GCC_ZIP) && mkdir -p $(ARM_GCC_DIR); fi
 gcc-dir:
-	cd $(TOOLS_DIR) && if test ! -d $(ARM_GCC); then $(MKDIR) $(ARM_GCC); fi
-	cd $(TOOLS_DIR) && cd $(ARM_GCC) && if test ! -d $(ARM_GCC_DIR); then $(MKDIR) $(ARM_GCC_DIR); fi
+	cd $(TOOLS_DIR) && if test ! -d $(ARM_GCC); then mkdir $(ARM_GCC); fi
+	cd $(TOOLS_DIR) && cd $(ARM_GCC) && if test ! -d $(ARM_GCC_DIR); then mkdir $(ARM_GCC_DIR); fi
 flash:
 	@echo "Writing binary to the arduino due . . ."
 	$(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BIN_FILE) -R

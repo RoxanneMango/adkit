@@ -1,0 +1,115 @@
+#######################################################################################################
+
+PORT_NUM = 3
+
+ifeq ($(OS),Windows_NT)
+PORT = com$(PORT_NUM)
+else
+PORT = ttyS$(PORT_NUM)
+endif
+
+#######################################################################################################
+
+ifeq ($(OS),Windows_NT)
+GCC_BIN = ../../tools/arm-none-eabi-gcc/9.3.1-2020q2-windows/bin
+else
+GCC_BIN = ../../tools/arm-none-eabi-gcc/9.3.1-2020q2-linux/gcc-arm-none-eabi-9-2020-q2-update/bin
+endif
+
+CC = $(GCC_BIN)/arm-none-eabi-gcc
+CXX = $(GCC_BIN)/arm-none-eabi-g++
+AR = $(GCC_BIN)/arm-none-eabi-ar
+OBJC = $(GCC_BIN)/arm-none-eabi-objcopy
+SIZE = $(GCC_BIN)/arm-none-eabi-size
+
+MACROS = -DF_CPU=84000000L \
+	-DARDUINO=10813 \
+	-DARDUINO_SAM_DUE \
+	-DARDUINO_ARCH_SAM \
+	-D__SAM3X8E__ \
+	-DUSB_VID=0x2341 \
+	-DUSB_PID=0x003e \
+	-DUSBCON
+CXXFLAGS = -c -g -Os -Wall -std=gnu++11 -nostdlib \
+	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions \
+	-MMD -mcpu=cortex-m3 -mthumb \
+	--param max-inline-insns-single=500 \
+	$(MACROS)
+CFLAGS = -c -g -Os -Wall -std=gnu11 -nostdlib \
+	-ffunction-sections -fdata-sections \
+	--param max-inline-insns-single=500 -Dprintf=iprintf \
+	-MMD -mcpu=cortex-m3 -mthumb \
+	$(MACROS)
+C_ASM_FLAGS = -c -g -x assembler-with-cpp \
+	-MMD -mcpu=cortex-m3 -mthumb \
+	$(MACROS)
+
+#######################################################################################################
+
+SAM_DIR = ../../lib/ArduinoCore-sam
+SAM_ARCHIVE = $(SAM_DIR)/out/sam.a $(SAM_DIR)/variants/arduino_due_x/libsam_sam3x8e_gcc_rel.a
+SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
+	-I$(SAM_DIR)/system/CMSIS/CMSIS/Include \
+	-I$(SAM_DIR)/system/CMSIS/Device/ATMEL \
+	-I$(SAM_DIR)/cores/arduino \
+	-I$(SAM_DIR)/cores/arduino/usb \
+	-I$(SAM_DIR)/cores/arduino/avr \
+	-I$(SAM_DIR)/libraries/HID/src \
+	-I$(SAM_DIR)/libraries/SPI/src \
+	-I$(SAM_DIR)/libraries/Wire/src \
+	-I$(SAM_DIR)/variants/arduino_due_x
+
+#######################################################################################################
+
+LINKER_SCRIPT = $(SAM_DIR)/variants/arduino_due_x/linker_scripts/gcc/flash.ld
+LINKER_UNDEF_SYM = -u _sbrk \
+	-u link \
+	-u _close \
+	-u _fstat \
+	-u _isatty \
+	-u _lseek \
+	-u _read \
+	-u _write \
+	-u _exit \
+	-u kill \
+	-u _getpid
+LINKER_FLAGS = -L$(BUILD_DIR) \
+	-Wl,--gc-sections \
+	-T$(LINKER_SCRIPT) \
+	-Wl,-Map,$(BUILD_DIR)/mapping.map \
+	-Wl,--cref \
+	-Wl,--check-sections \
+	-Wl,--gc-sections \
+	-Wl,--entry=Reset_Handler \
+	-Wl,--unresolved-symbols=report-all \
+	-Wl,--warn-common \
+	-Wl,--warn-section-align \
+	-Wl,--start-group $(LINKER_UNDEF_SYM) $(ARCHIVES) -Wl,--end-group \
+	-lm \
+	-lgcc
+
+#######################################################################################################
+
+ADAFRUIT_NEOPIXEL_DIR = ../../lib/Adafruit_NeoPixel
+ADAFRUIT_NEOPIXEL_ARCHIVE = $(ADAFRUIT_NEOPIXEL_DIR)/out/Adafruit_NeoPixel.a
+ADAFRUIT_NEOPIXEL_INCLUDE = $(ADAFRUIT_NEOPIXEL_DIR)
+
+#######################################################################################################
+
+RTC_DIR = ../../lib/RTCDue
+RTC_ARCHIVE = $(RTC_DIR)/out/RTCDue.a
+RTC_INCLUDE = $(RTC_DIR)/src
+
+#######################################################################################################
+
+PYTHON = python3
+RM = rm
+BOSSAC = ../../tools/bossac/BOSSAC-1.6.2-arduino/bin/bossac
+PORT_BUMP = ../../tools/bossac/open_close_port.py
+
+ifeq ($(OS),Windows_NT)
+PYTHON = py
+RM = del
+endif
+
+#######################################################################################################
