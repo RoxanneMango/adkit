@@ -21,6 +21,7 @@ SAM_ARCHIVE = sam.a
 sam: sam-out-dir $(SAM_CORE_OBJECTS_CXX) $(SAM_CORE_USB_OBJECTS_CXX) $(SAM_CORE_OBJECTS_C) $(SAM_CORE_AVR_OBJECTS_C) $(SAM_CORE_OBJECTS_S) sam-peripherals $(SAM_VARS_OBJECTS_CXX)
 
 ifeq ($(OS),Windows_NT)
+
 sam-out-dir: sam-build-dir
 	cd $(SAM_DIR) && if not exist out mkdir out
 sam-build-dir:
@@ -28,7 +29,9 @@ sam-build-dir:
 clean-sam: 
 	rmdir $(SAM_DIR)\\build /s /q
 	rmdir $(SAM_DIR)\\out /s /q
+
 else
+
 sam-out-dir: sam-build-dir
 	cd $(SAM_DIR) && mkdir -p out
 sam-build-dir:
@@ -36,6 +39,7 @@ sam-build-dir:
 clean-sam: 
 	rm -rf $(SAM_DIR)/build
 	rm -rf $(SAM_DIR)/out
+
 endif
 
 $(SAM_CORE_USB_OBJECTS_CXX): %.o: $(SAM_CORE_USB)/%.cpp
@@ -85,6 +89,7 @@ $(ADAFRUIT_BUSIO_OBJECTS_CXX): %.o: $(ADAFRUIT_BUSIO_DIR)/%.cpp
 	$(AR) rcs $(ADAFRUIT_BUSIO_DIR)/out/$(ADAFRUIT_BUSIO_ARCHIVE) $(ADAFRUIT_BUSIO_DIR)/build/$@
 
 ifeq ($(OS),Windows_NT)
+
 adafruit-busio-build-dir:
 	cd $(ADAFRUIT_BUSIO_DIR) && if not exist build mkdir build
 adafruit-busio-out-dir: adafruit-busio-build-dir
@@ -92,7 +97,9 @@ adafruit-busio-out-dir: adafruit-busio-build-dir
 clean-adafruit-busio:
 	rmdir $(ADAFRUIT_BUSIO_DIR)\\build /s /q
 	rmdir $(ADAFRUIT_BUSIO_DIR)\\out /s /q
+
 else
+
 adafruit-busio-build-dir:
 	cd $(ADAFRUIT_BUSIO_DIR) && mkdir -p build
 adafruit-busio-out-dir: adafruit-busio-build-dir
@@ -100,6 +107,7 @@ adafruit-busio-out-dir: adafruit-busio-build-dir
 clean-adafruit-busio:
 	rm -rf $(ADAFRUIT_BUSIO_DIR)/build
 	rm -rf $(ADAFRUIT_BUSIO_DIR)/out
+
 endif
 
 #######################################################################################################
@@ -121,6 +129,7 @@ $(ADAFRUIT_GFX_OBJECTS_C): %.o: $(ADAFRUIT_GFX_DIR)/%.c
 	$(AR) rcs $(ADAFRUIT_GFX_DIR)/out/$(ADAFRUIT_GFX_ARCHIVE) $(ADAFRUIT_GFX_DIR)/build/$@
 
 ifeq ($(OS),Windows_NT)
+
 adafruit-gfx-build-dir:
 	cd $(ADAFRUIT_GFX_DIR) && if not exist build mkdir build
 adafruit-gfx-out-dir: adafruit-gfx-build-dir
@@ -128,7 +137,9 @@ adafruit-gfx-out-dir: adafruit-gfx-build-dir
 clean-adafruit-gfx:
 	rmdir $(ADAFRUIT_GFX_DIR)\\build /s /q
 	rmdir $(ADAFRUIT_GFX_DIR)\\out /s /q
+
 else
+
 adafruit-gfx-build-dir:
 	cd $(ADAFRUIT_GFX_DIR) && mkdir -p build
 adafruit-gfx-out-dir: adafruit-gfx-build-dir
@@ -136,6 +147,7 @@ adafruit-gfx-out-dir: adafruit-gfx-build-dir
 clean-adafruit-gfx:
 	rm -rf $(ADAFRUIT_GFX_DIR)/build
 	rm -rf $(ADAFRUIT_GFX_DIR)/out
+
 endif
 
 #######################################################################################################
@@ -149,6 +161,7 @@ adafruit-ssd1306: adafruit-ssd1306-out-dir
 	$(AR) rcs $(ADAFRUIT_SSD1306_DIR)/out/$(ADAFRUIT_SSD1306_ARCHIVE) $(ADAFRUIT_SSD1306_DIR)/build/Adafruit_SSD1306.o
 
 ifeq ($(OS), Windows_NT)
+
 adafruit-ssd1306-build-dir:
 	cd $(ADAFRUIT_SSD1306_DIR) && if not exist build mkdir build
 adafruit-ssd1306-out-dir: adafruit-ssd1306-build-dir
@@ -156,7 +169,9 @@ adafruit-ssd1306-out-dir: adafruit-ssd1306-build-dir
 clean-adafruit-ssd1306:
 	rmdir $(ADAFRUIT_SSD1306_DIR)\\build /s /q
 	rmdir $(ADAFRUIT_SSD1306_DIR)\\out /s /q
+
 else
+
 adafruit-ssd1306-build-dir:
 	cd $(ADAFRUIT_SSD1306_DIR) && mkdir -p build
 adafruit-ssd1306-out-dir: adafruit-ssd1306-build-dir
@@ -164,6 +179,7 @@ adafruit-ssd1306-out-dir: adafruit-ssd1306-build-dir
 clean-adafruit-ssd1306:
 	rm -rf $(ADAFRUIT_SSD1306_DIR)/build
 	rm -rf $(ADAFRUIT_SSD1306_DIR)/out
+
 endif
 
 #######################################################################################################
@@ -185,6 +201,7 @@ $(ADAFRUIT_NEOPIXEL_OBJECTS_C): %.o: $(ADAFRUIT_NEOPIXEL_DIR)/%.c
 	$(AR) rcs $(ADAFRUIT_NEOPIXEL_DIR)/out/$(ADAFRUIT_NEOPIXEL_ARCHIVE) $(ADAFRUIT_NEOPIXEL_DIR)/build/$@
 
 ifeq ($(OS), Windows_NT)
+
 adafruit-neopixel-build-dir:
 	cd $(ADAFRUIT_NEOPIXEL_DIR) && if not exist build mkdir build
 adafruit-neopixel-out-dir: adafruit-neopixel-build-dir
@@ -192,7 +209,9 @@ adafruit-neopixel-out-dir: adafruit-neopixel-build-dir
 clean-adafruit-neopixel: clean-adafruit-busio clean-adafruit-gfx clean-adafruit-ssd1306
 	rmdir $(ADAFRUIT_NEOPIXEL_DIR)\\build /s /q
 	rmdir $(ADAFRUIT_NEOPIXEL_DIR)\\out /s /q
+
 else
+
 adafruit-neopixel-build-dir:
 	cd $(ADAFRUIT_NEOPIXEL_DIR) && mkdir -p build
 adafruit-neopixel-out-dir: adafruit-neopixel-build-dir
@@ -200,6 +219,7 @@ adafruit-neopixel-out-dir: adafruit-neopixel-build-dir
 clean-adafruit-neopixel: clean-adafruit-busio clean-adafruit-gfx clean-adafruit-ssd1306
 	rm -rf $(ADAFRUIT_NEOPIXEL_DIR)/build
 	rm -rf $(ADAFRUIT_NEOPIXEL_DIR)/out
+
 endif
 
 #######################################################################################################
@@ -213,6 +233,7 @@ rtc: rtc-out-dir
 	$(AR) rcs $(RTC_DIR)/out/$(RTC_ARCHIVE) $(RTC_DIR)/build/RTCDue.o
 
 ifeq ($(OS), Windows_NT)
+
 rtc-build-dir:
 	cd $(RTC_DIR) && if not exist build mkdir build
 rtc-out-dir : rtc-build-dir
@@ -220,7 +241,9 @@ rtc-out-dir : rtc-build-dir
 clean-rtc:
 	rmdir $(RTC_DIR)\\build /s /q
 	rmdir $(RTC_DIR)\\out /s /q
+
 else
+
 rtc-build-dir:
 	cd $(RTC_DIR) && mkdir -p build
 rtc-out-dir : rtc-build-dir
@@ -228,6 +251,7 @@ rtc-out-dir : rtc-build-dir
 clean-rtc:
 	rm -rf $(RTC_DIR)/build
 	rm -rf $(RTC_DIR)/out
+
 endif
 
 #######################################################################################################
