@@ -58,8 +58,8 @@ flash:
 else
 # Requires dark magic and some luck: what currently works (for me): connect to screen, then bump once, then flash twice
 bump:
-	python3 $(PORT_BUMP) /dev/$(PORT)
+	sudo python3 $(PORT_BUMP) /dev/$(PORT)
 flash:
 	@echo "Writing binary to the arduino due . . ."
-	$(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BUILD_DIR)/$(BIN_FILE).bin -R
+	sudo $(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BUILD_DIR)/$(BIN_FILE).bin -R
 endif
