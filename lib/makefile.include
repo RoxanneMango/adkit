@@ -26,6 +26,7 @@ SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
 	-I$(SAM_LIBS)/HID/src \
 	-I$(SAM_LIBS)/SPI/src \
 	-I$(SAM_LIBS)/Wire/src \
+	-I$(SAM_LIBS)/Servo/src \
 	-I$(SAM_VARS)
 
 SAM_MACROS = -DF_CPU=84000000L \

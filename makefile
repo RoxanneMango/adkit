@@ -43,6 +43,8 @@ gcc-dir:
 clean:
 	rmdir $(TOOLS_DIR)\\$(ARM_GCC)\\$(ARM_GCC_DIR) /s /q
 	del $(TOOLS_DIR)\\$(ARM_GCC)\\$(ARM_GCC_ZIP) /s /q
+	cd lib && $(MAKE) clean
+	cd tools && cd bossac && cd BOSSAC-1.6.2-arduino && $(MAKE) clean
 
 else
 
@@ -55,5 +57,7 @@ gcc-dir:
 clean:
 	rm -rf $(TOOLS_DIR)/$(ARM_GCC)/$(ARM_GCC_DIR)
 	rm $(TOOLS_DIR)/$(ARM_GCC)/$(ARM_GCC_ZIP)
+	cd lib && $(MAKE) clean
+	cd tools && cd bossac && cd BOSSAC-1.6.2-arduino && $(MAKE) clean
 	
 endif

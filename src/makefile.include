@@ -31,7 +31,7 @@ MACROS = -DF_CPU=84000000L \
 	-DUSB_PID=0x003e \
 	-DUSBCON
 CXXFLAGS = -c -g -Os -Wall -std=gnu++11 -nostdlib \
-	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions \
+	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fexceptions \
 	-MMD -mcpu=cortex-m3 -mthumb \
 	--param max-inline-insns-single=500 \
 	$(MACROS)
@@ -52,11 +52,12 @@ SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
 	-I$(SAM_DIR)/system/CMSIS/CMSIS/Include \
 	-I$(SAM_DIR)/system/CMSIS/Device/ATMEL \
 	-I$(SAM_DIR)/cores/arduino \
-	-I$(SAM_DIR)/cores/arduino/usb \
+	-I$(SAM_DIR)/cores/arduino/USB \
 	-I$(SAM_DIR)/cores/arduino/avr \
 	-I$(SAM_DIR)/libraries/HID/src \
 	-I$(SAM_DIR)/libraries/SPI/src \
 	-I$(SAM_DIR)/libraries/Wire/src \
+	-I$(SAM_DIR)/libraries/Servo/src \
 	-I$(SAM_DIR)/variants/arduino_due_x
 
 #######################################################################################################
@@ -86,7 +87,8 @@ LINKER_FLAGS = -L$(BUILD_DIR) \
 	-Wl,--warn-section-align \
 	-Wl,--start-group $(LINKER_UNDEF_SYM) $(ARCHIVES) -Wl,--end-group \
 	-lm \
-	-lgcc
+	-lgcc \
+	-lsupc++
 
 #######################################################################################################
 

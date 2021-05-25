@@ -18,7 +18,7 @@ SAM_VARS_OBJECTS_CXX = variant.o
 
 SAM_ARCHIVE = sam.a
 
-sam: sam-out-dir $(SAM_CORE_OBJECTS_CXX) $(SAM_CORE_USB_OBJECTS_CXX) $(SAM_CORE_OBJECTS_C) $(SAM_CORE_AVR_OBJECTS_C) $(SAM_CORE_OBJECTS_S) sam-peripherals $(SAM_VARS_OBJECTS_CXX)
+sam: sam-out-dir $(SAM_CORE_OBJECTS_CXX) $(SAM_CORE_USB_OBJECTS_CXX) $(SAM_CORE_OBJECTS_C) $(SAM_CORE_AVR_OBJECTS_C) $(SAM_CORE_OBJECTS_S) sam-peripherals sam-servo $(SAM_VARS_OBJECTS_CXX) 
 
 ifeq ($(OS),Windows_NT)
 
@@ -64,8 +64,15 @@ $(SAM_CORE_OBJECTS_S): %.o: $(SAM_CORE)/%.S
 
 sam-peripherals:
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/HID/src/HID.cpp -o $(SAM_DIR)/build/HID.o
+#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/HID.o
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/SPI/src/SPI.cpp -o $(SAM_DIR)/build/SPI.o
+#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/SPI.o
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/Wire/src/Wire.cpp -o $(SAM_DIR)/build/Wire.o
+#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Wire.o
+	
+sam-servo:
+	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/Servo/src/sam/Servo.cpp -o $(SAM_DIR)/build/Servo.o
+	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Servo.o
 
 $(SAM_LIBS_OBJECTS_CXX): %.o: $(SAM_LIBS)/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $(SAM_DIR)/build/$@

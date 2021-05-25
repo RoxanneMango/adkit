@@ -13,9 +13,9 @@ ARCHIVES = $(SAM_ARCHIVE) $(BUILD_DIR)/$(BIN_FILE).a
 .PHONY: link clean flash bump
 
 link: build-dir out-dir $(OBJECTS_C) $(OBJECTS_CXX) $(OBJECTS_ASM)
-	$(CC) -mcpu=cortex-m3 -mthumb -Os -o $(BUILD_DIR)/$(BIN_FILE).elf $(LINKER_FLAGS)
-	$(OBJC) -O binary $(BUILD_DIR)/$(BIN_FILE).elf $(BUILD_DIR)/$(BIN_FILE).bin
-	$(SIZE) -A $(BUILD_DIR)/$(BIN_FILE).elf
+	$(CC) -mcpu=cortex-m3 -mthumb -Os -o $(OUTPUT_DIR)/$(BIN_FILE).elf $(LINKER_FLAGS)
+	$(OBJC) -O binary $(OUTPUT_DIR)/$(BIN_FILE).elf $(OUTPUT_DIR)/$(BIN_FILE).bin
+	$(SIZE) -A $(OUTPUT_DIR)/$(BIN_FILE).elf
 
 $(OBJECTS_C): %.o: %.c
 	$(CC) $(CFLAGS) $(SAM_INCLUDE) $< -o $(BUILD_DIR)/$@
@@ -44,6 +44,7 @@ endif
 clean: 
 	@echo "Initiating lemon pledge . . .";
 	cd $(BUILD_DIR) && $(RM) *.o *.bin *.elf *.map *.d *.a
+	cd $(OUTPUT_DIR) && $(RM) *.bin *.elf
 	@echo "I clean . . .";
 
 ifeq ($(OS),Windows_NT)
@@ -54,12 +55,12 @@ flash:
 	@echo "Forcing reset with port-bump of 1200 bps . . ."
 	$(PYTHON) $(PORT_BUMP) $(PORT)
 	@echo "Writing binary to the arduino due . . ."
-	$(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BUILD_DIR)/$(BIN_FILE).bin -R
+	$(BOSSAC) -i --port=$(PORT) -U false -e -w -v -b $(OUTPUT_DIR)/$(BIN_FILE).bin -R
 else
 # Requires dark magic and some luck: what currently works (for me): connect to screen, then bump once, then flash twice
 bump:
 	python3 $(PORT_BUMP) /dev/$(PORT)
 flash:
 	@echo "Writing binary to the arduino due . . ."
-	$(BOSSAC) -i -d --port=$(PORT) -U false -e -w -v -b $(BUILD_DIR)/$(BIN_FILE).bin -R
+	$(BOSSAC) -i --port=$(PORT) -U false -e -w -v -b $(OUTPUT_DIR)/$(BIN_FILE).bin -R
 endif
