@@ -20,9 +20,9 @@ ARM_GCC_DIR = $(ARM_GCC_VERSION)-windows
 
 endif
 
-.PHONY: all gcc lib bossac
+.PHONY: all submodules gcc lib bossac
 
-all: gcc lib bossac
+all: submodules gcc lib bossac
 
 gcc: gcc-get
 	cd $(TOOLS_DIR) && cd $(ARM_GCC) && \
@@ -31,6 +31,8 @@ bossac:
 	cd tools && cd bossac && cd BOSSAC-1.6.2-arduino && $(MAKE)
 lib:
 	cd lib && $(MAKE)
+submodules:
+	git submodule update --init --recursive
 
 ifeq ($(OS),Windows_NT)
 
