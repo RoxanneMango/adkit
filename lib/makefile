@@ -18,9 +18,14 @@ SAM_VARS_OBJECTS_CXX = variant.o
 
 SAM_ARCHIVE = sam.a
 
-sam: sam-out-dir $(SAM_CORE_OBJECTS_CXX) $(SAM_CORE_USB_OBJECTS_CXX) $(SAM_CORE_OBJECTS_C) $(SAM_CORE_AVR_OBJECTS_C) $(SAM_CORE_OBJECTS_S) sam-peripherals sam-servo $(SAM_VARS_OBJECTS_CXX) 
+sam: sam-out-dir $(SAM_CORE_OBJECTS_CXX) $(SAM_CORE_USB_OBJECTS_CXX) $(SAM_CORE_OBJECTS_C) $(SAM_CORE_AVR_OBJECTS_C) $(SAM_CORE_OBJECTS_S) sam-peripherals sam-servo sam-sonar $(SAM_VARS_OBJECTS_CXX) 
 
 ifeq ($(OS),Windows_NT)
+
+#sam-move-servo-dir:
+#	move $(SAM_LIBS_SERVO) $(SAM_DIR)\\libraries
+#sam-move-sonar-dir:
+#	move $(SAM_LIBS_SONAR) $(SAM_DIR)\\libraries
 
 sam-out-dir: sam-build-dir
 	cd $(SAM_DIR) && if not exist out mkdir out
@@ -31,6 +36,11 @@ clean-sam:
 	rmdir $(SAM_DIR)\\out /s /q
 
 else
+
+#sam-move-servo-dir:
+#	mv $(SAM_LIBS_SERVO) $(SAM_DIR)/libraries
+#sam-move-sonar-dir:
+#	mv $(SAM_LIBS_SONAR) $(SAM_DIR)/libraries
 
 sam-out-dir: sam-build-dir
 	cd $(SAM_DIR) && mkdir -p out
@@ -64,15 +74,19 @@ $(SAM_CORE_OBJECTS_S): %.o: $(SAM_CORE)/%.S
 
 sam-peripherals:
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/HID/src/HID.cpp -o $(SAM_DIR)/build/HID.o
-#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/HID.o
+	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/HID.o
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/SPI/src/SPI.cpp -o $(SAM_DIR)/build/SPI.o
-#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/SPI.o
+	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/SPI.o
 	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/Wire/src/Wire.cpp -o $(SAM_DIR)/build/Wire.o
-#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Wire.o
+	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Wire.o
 	
-sam-servo:
-	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/Servo/src/sam/Servo.cpp -o $(SAM_DIR)/build/Servo.o
-	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Servo.o
+#sam-servo: sam-move-servo-dir
+#	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/Servo/src/sam/Servo.cpp -o $(SAM_DIR)/build/Servo.o
+#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/Servo.o
+
+#sam-sonar: sam-move-sonar-dir
+#	$(CXX) $(CXXFLAGS) $(SAM_LIBS)/HCSR04/src/HCSR04.cpp -o $(SAM_DIR)/build/HCSR04.o
+#	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/HCSR04.o
 
 $(SAM_LIBS_OBJECTS_CXX): %.o: $(SAM_LIBS)/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $(SAM_DIR)/build/$@
@@ -81,6 +95,66 @@ $(SAM_LIBS_OBJECTS_CXX): %.o: $(SAM_LIBS)/%.cpp
 $(SAM_VARS_OBJECTS_CXX): %.o: $(SAM_VARS)/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $(SAM_DIR)/build/$@
 	$(AR) rcs $(SAM_DIR)/out/$(SAM_ARCHIVE) $(SAM_DIR)/build/$@
+
+#######################################################################################################
+
+SAM_SERVO_ARCHIVE = sam_servo.a
+
+sam-servo: sam-servo-out-dir
+	$(CXX) $(CXXFLAGS) $(SAM_INCLUDE_SERVO) $(SAM_LIBS_SERVO)/src/sam/Servo.cpp -o $(SAM_LIBS_SERVO)/build/Servo.o
+	$(AR) rcs $(SAM_LIBS_SERVO)/out/$(SAM_SERVO_ARCHIVE) $(SAM_LIBS_SERVO)/build/Servo.o
+
+ifeq ($(OS),Windows_NT)
+
+sam-servo-build-dir:
+	cd $(SAM_LIBS_SERVO) && if not exist build mkdir build
+sam-servo-out-dir: sam-servo-build-dir
+	cd $(SAM_LIBS_SERVO) && if not exist  out mkdir out
+clean-sam-servo:
+	rmdir $(SAM_LIBS_SERVO)\\build /s /q
+	rmdir $(SAM_LIBS_SERVO)\\out /s /q
+
+else
+
+sam-servo-build-dir:
+	cd $(SAM_LIBS_SERVO) && mkdir -p build
+sam-servo-out-dir: sam-servo-build-dir
+	cd $(SAM_LIBS_SERVO) && mkdir -p out
+clean-sam-servo:
+	rm -rf $(SAM_LIBS_SERVO)/build
+	rm -rf $(SAM_LIBS_SERVO)/out
+
+endif
+	
+#######################################################################################################
+
+SAM_SONAR_ARCHIVE = sam_sonar_HCSR04.a
+
+sam-sonar: sam-sonar-out-dir
+	$(CXX) $(CXXFLAGS) $(SAM_INCLUDE_SONAR) $(SAM_LIBS_SONAR)/src/HCSR04.cpp -o $(SAM_LIBS_SONAR)/build/HCSR04.o
+	$(AR) rcs $(SAM_LIBS_SONAR)/out/$(SAM_SONAR_ARCHIVE) $(SAM_LIBS_SONAR)/build/HCSR04.o
+
+ifeq ($(OS),Windows_NT)
+
+sam-sonar-build-dir:
+	cd $(SAM_LIBS_SONAR) && if not exist build mkdir build
+sam-sonar-out-dir: sam-sonar-build-dir
+	cd $(SAM_LIBS_SONAR) && if not exist  out mkdir out
+clean-sam-sonar:
+	rmdir $(SAM_LIBS_SONAR)\\build /s /q
+	rmdir $(SAM_LIBS_SONAR)\\out /s /q
+
+else
+
+sam-sonar-build-dir:
+	cd $(SAM_LIBS_SONAR) && mkdir -p build
+sam-sonar-out-dir: sam-sonar-build-dir
+	cd $(SAM_LIBS_SONAR) && mkdir -p out
+clean-sam-sonar:
+	rm -rf $(SAM_LIBS_SONAR)/build
+	rm -rf $(SAM_LIBS_SONAR)/out
+
+endif
 	
 #######################################################################################################
 

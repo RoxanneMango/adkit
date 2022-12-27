@@ -4,6 +4,8 @@ BUILD_DIR = build
 OUTPUT_DIR = out
 BIN_FILE = hello
 
+INCLUDE = $(SAM_INCLUDE)
+
 OBJECTS_C =
 OBJECTS_CXX = main.o
 OBJECTS_ASM =
@@ -18,15 +20,15 @@ link: build-dir out-dir $(OBJECTS_C) $(OBJECTS_CXX) $(OBJECTS_ASM)
 	$(SIZE) -A $(OUTPUT_DIR)/$(BIN_FILE).elf
 
 $(OBJECTS_C): %.o: %.c
-	$(CC) $(CFLAGS) $(SAM_INCLUDE) $< -o $(BUILD_DIR)/$@
+	$(CC) $(CFLAGS) $(INCLUDE) $< -o $(BUILD_DIR)/$@
 	$(AR) rcs $(BUILD_DIR)/$(BIN_FILE).a $(BUILD_DIR)/$@
 	
 $(OBJECTS_CXX): %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(SAM_INCLUDE) $< -o $(BUILD_DIR)/$@
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $< -o $(BUILD_DIR)/$@
 	$(AR) rcs $(BUILD_DIR)/$(BIN_FILE).a $(BUILD_DIR)/$@
 
 $(OBJECTS_ASM): %.o: %.S
-	$(CXX) $(C_ASM_FLAGS) $(SAM_INCLUDE) $< -o $(BUILD_DIR)/$@
+	$(CXX) $(C_ASM_FLAGS) $(INCLUDE) $< -o $(BUILD_DIR)/$@
 	$(AR) rcs $(BUILD_DIR)/$(BIN_FILE).a $(BUILD_DIR)/$@
 
 ifeq ($(OS), Windows_NT)

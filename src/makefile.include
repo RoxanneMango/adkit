@@ -1,6 +1,7 @@
 #######################################################################################################
 
-PORT = ttyACM0
+#PORT = ttyACM0
+PORT = com3
 
 #######################################################################################################
 
@@ -16,6 +17,9 @@ AR = $(GCC_BIN)/arm-none-eabi-ar
 OBJC = $(GCC_BIN)/arm-none-eabi-objcopy
 SIZE = $(GCC_BIN)/arm-none-eabi-size
 
+CXX_NATIVE = g++
+CC_NATIVE = gcc
+
 MACROS = -DF_CPU=84000000L \
 	-DARDUINO=10813 \
 	-DARDUINO_SAM_DUE \
@@ -24,12 +28,12 @@ MACROS = -DF_CPU=84000000L \
 	-DUSB_VID=0x2341 \
 	-DUSB_PID=0x003e \
 	-DUSBCON
-CXXFLAGS = -c -g -Os -Wall -std=gnu++11 -nostdlib \
+CXXFLAGS = -c -g -Os -Wall -std=gnu++14 -nostdlib \
 	-ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fexceptions \
 	-MMD -mcpu=cortex-m3 -mthumb \
 	--param max-inline-insns-single=500 \
 	$(MACROS)
-CFLAGS = -c -g -Os -Wall -std=gnu11 -nostdlib \
+CFLAGS = -c -g -Os -Wall -std=gnu14 -nostdlib \
 	-ffunction-sections -fdata-sections \
 	--param max-inline-insns-single=500 -Dprintf=iprintf \
 	-MMD -mcpu=cortex-m3 -mthumb \
@@ -51,8 +55,17 @@ SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
 	-I$(SAM_DIR)/libraries/HID/src \
 	-I$(SAM_DIR)/libraries/SPI/src \
 	-I$(SAM_DIR)/libraries/Wire/src \
-	-I$(SAM_DIR)/libraries/Servo/src \
 	-I$(SAM_DIR)/variants/arduino_due_x
+
+#######################################################################################################
+
+SAM_SERVO_DIR = ../../lib/Servo
+SAM_SERVO_ARCHIVE = $(SAM_SERVO_DIR)/out/sam_servo.a
+SAM_SERVO_INCLUDE = -I$(SAM_SERVO_DIR)/src -I$(SAM_SERVO_DIR)/src/sam
+
+SAM_SONAR_DIR = ../../lib/HCSR04
+SAM_SONAR_ARCHIVE = $(SAM_SONAR_DIR)/out/sam_sonar_HCSR04.a
+SAM_SONAR_INCLUDE = -I$(SAM_SONAR_DIR)/src
 
 #######################################################################################################
 
@@ -88,13 +101,27 @@ LINKER_FLAGS = -L$(BUILD_DIR) \
 
 ADAFRUIT_NEOPIXEL_DIR = ../../lib/Adafruit_NeoPixel
 ADAFRUIT_NEOPIXEL_ARCHIVE = $(ADAFRUIT_NEOPIXEL_DIR)/out/Adafruit_NeoPixel.a
-ADAFRUIT_NEOPIXEL_INCLUDE = $(ADAFRUIT_NEOPIXEL_DIR)
+ADAFRUIT_NEOPIXEL_INCLUDE = -I$(ADAFRUIT_NEOPIXEL_DIR)
+
+#######################################################################################################
+
+ADAFRUIT_GFX_DIR = ../../lib/Adafruit-GFX-Library
+ADAFRUIT_GFX_ARCHIVE = $(ADAFRUIT_GFX_DIR)/out/Adafruit-GFX-Library.a
+ADAFRUIT_GFX_INCLUDE = -I$(ADAFRUIT_GFX_DIR)
+
+ADAFRUIT_SSD1306_DIR = ../../lib/Adafruit_SSD1306
+ADAFRUIT_SSD1306_ARCHIVE = $(ADAFRUIT_SSD1306_DIR)/out/Adafruit_SSD1306.a
+ADAFRUIT_SSD1306_INCLUDE = -I$(ADAFRUIT_SSD1306_DIR)
 
 #######################################################################################################
 
 RTC_DIR = ../../lib/RTCDue
 RTC_ARCHIVE = $(RTC_DIR)/out/RTCDue.a
-RTC_INCLUDE = $(RTC_DIR)/src
+RTC_INCLUDE = -I$(RTC_DIR)/src
+
+#######################################################################################################
+
+CATCH_2_INCLUDE = -I../../lib/Catch2
 
 #######################################################################################################
 

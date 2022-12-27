@@ -17,6 +17,13 @@ SAM_CORE_AVR = $(SAM_CORE)/avr
 SAM_LIBS = $(SAM_DIR)/libraries
 SAM_VARS = $(SAM_DIR)/variants/arduino_due_x
 
+SAM_LIBS_SERVO = Servo
+SAM_INCLUDE_SERVO = -I$(SAM_LIBS_SERVO)/src \
+	-I$(SAM_LIBS_SERVO)/src/sam
+
+SAM_LIBS_SONAR = HCSR04
+SAM_INCLUDE_SONAR = -I$(SAM_LIBS_SONAR)/src
+
 SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
 	-I$(SAM_DIR)/system/CMSIS/CMSIS/Include \
 	-I$(SAM_DIR)/system/CMSIS/Device/ATMEL \
@@ -26,8 +33,9 @@ SAM_INCLUDE = -I$(SAM_DIR)/system/libsam \
 	-I$(SAM_LIBS)/HID/src \
 	-I$(SAM_LIBS)/SPI/src \
 	-I$(SAM_LIBS)/Wire/src \
-	-I$(SAM_LIBS)/Servo/src \
 	-I$(SAM_VARS)
+#	-I$(SAM_LIBS)/Servo/src \
+#	-I$(SAM_LIBS)/HCSR04/src \
 
 SAM_MACROS = -DF_CPU=84000000L \
 	-DARDUINO=10813 \

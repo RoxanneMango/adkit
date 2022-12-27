@@ -1,0 +1,44 @@
+In file included from tic_tac_toe.h:8,
+                 from main.cpp:5:
+command_list.h: In constructor 'CommandList::CommandList(unsigned int)':
+command_list.h:21:30: warning: 'CommandList::list' will be initialized after [-Wreorder]
+   21 |  std::vector<PlaceCommand *> list;
+      |                              ^~~~
+command_list.h:12:15: warning:   'unsigned int CommandList::max' [-Wreorder]
+   12 |  unsigned int max;
+      |               ^~~
+command_list.h:23:2: warning:   when initialized here [-Wreorder]
+   23 |  CommandList(unsigned int max) : list(max+1, NULL), max(max), sizee(0), index(0), num(0), isDecremented(false)
+      |  ^~~~~~~~~~~
+command_list.h: In member function 'void CommandList::push_back(PlaceCommand*)':
+command_list.h:47:14: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   47 |   if( (index >= max) && (index >= sizee) )
+      |        ~~~~~~^~~~~~
+command_list.h:47:32: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   47 |   if( (index >= max) && (index >= sizee) )
+      |                          ~~~~~~^~~~~~~~
+command_list.h:62:13: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   62 |    if(index < sizee)
+      |       ~~~~~~^~~~~~~
+command_list.h:66:11: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   66 |    if(num < max)
+      |       ~~~~^~~~~
+command_list.h: In member function 'bool CommandList::isEnd()':
+command_list.h:91:14: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   91 |   return num >= sizee;
+      |          ~~~~^~~~~~~~
+command_list.h: In member function 'int CommandList::operator++(int)':
+command_list.h:96:17: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+   96 |   index = index < sizee ? index+1 : 1;
+      |           ~~~~~~^~~~~~~
+In file included from main.cpp:5:
+tic_tac_toe.h: In member function 'virtual void TicTacToe::handleInput()':
+tic_tac_toe.h:174:37: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+  174 |       if(commandList.list[i]->index == pos) throw "space is already occupied";
+tic_tac_toe.h: In function 'int main(int, char**)':
+tic_tac_toe.h:113:84: warning: 'sprintf' writing a terminating nul past the end of the destination [-Wformat-overflow=]
+  113 |   sprintf(board, "   |   |   \n---|---|---\n   |   |   \n---|---|---\n   |   |   \n");
+      |                                                                                    ^
+tic_tac_toe.h:113:10: note: 'sprintf' output 61 bytes into a destination of size 60
+  113 |   sprintf(board, "   |   |   \n---|---|---\n   |   |   \n---|---|---\n   |   |   \n");
+      |   ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
